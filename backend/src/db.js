@@ -1,5 +1,11 @@
 const { Pool } = require('pg');
 
+const requiredEnv = ['DB_HOST', 'DB_PORT', 'DB_USER', 'DB_PASSWORD', 'DB_NAME'];
+const missingEnv = requiredEnv.filter((key) => !process.env[key]);
+if (missingEnv.length > 0) {
+  throw new Error(`Missing required database env vars: ${missingEnv.join(', ')}`);
+}
+
 const pool = new Pool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
